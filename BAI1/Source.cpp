@@ -30,12 +30,14 @@ Node* InPre(Node*);
 Node* DeletePrimeNode(Tree&, int);
 Node* Delete(Tree&, Node*, int);
 int CountNode(Node*);
+int CountNodeDegree2(Node*);
+int CountLeafNode(Node*);
 void DrawTree(Tree& t);
 
 
 int main()
 {
-	int quantityOfNodes;
+	int quantityOfNodes, quantityOfNodesDegree2, quantityOfLeafNodes, treeHeight;
 	Node* p;
 	Tree t;
 	InitTree(t);
@@ -60,6 +62,14 @@ int main()
 	quantityOfNodes = CountNode(t.root);
 	cout << "Quantity of Nodes: " << quantityOfNodes << endl;
 
+	quantityOfNodesDegree2 = CountNode(t.root);
+	cout << "Quantity of Nodes having 2 children: " << quantityOfNodesDegree2 << endl;
+
+	quantityOfLeafNodes = CountNode(t.root);
+	cout << "Quantity of Leaf Nodes: " << quantityOfLeafNodes << endl;
+
+	treeHeight = Height(t.root);
+	cout << "Height of Tree: " << treeHeight << endl;
 
 	return 0;
 }
@@ -253,6 +263,34 @@ int CountNode(Node* p)
 		x = CountNode(p->left);
 		y = CountNode(p->right);
 		return x + y + 1;
+	}
+	return 0;
+}
+int CountNodeDegree2(Node* p)
+{
+	int x, y;
+	if (p != nullptr)
+	{
+		x = CountNode(p->left);
+		y = CountNode(p->right);
+		if (p->left != nullptr && p->right != nullptr)
+			return x + y + 1;
+		else
+			return x + y;
+	}
+	return 0;
+}
+int CountLeafNode(Node* p)
+{
+	int x, y;
+	if (p != nullptr)
+	{
+		x = CountNode(p->left);
+		y = CountNode(p->right);
+		if (p->left == nullptr && p->right == nullptr)
+			return x + y + 1;
+		else
+			return x + y;
 	}
 	return 0;
 }

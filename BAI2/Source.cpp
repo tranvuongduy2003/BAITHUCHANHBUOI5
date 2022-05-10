@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include <queue>
 using namespace std;
 
@@ -30,12 +31,34 @@ void DeleteGpaEqual5(BST&);
 void PrintNode(Node*);
 void PrintGpaDescending(Node*);
 int Degree(Node*);
-
-
-
+void InputNode(Node*&);
+void Input(BST&);
 
 int main()
 {
+	int maSo = 123;
+	string hoTen = "Van Anh";
+	BST bst;
+	InitBST(bst);
+
+	if (Search(bst.root, maSo))
+		cout << "Tim thay sinh vien co ma so " << maSo << endl;
+	else
+		cout << "Khong tim thay" << endl;
+
+	if (Search(bst.root, hoTen))
+		cout << "Tim thay sinh vien co ho ten " << hoTen << endl;
+	else
+		cout << "Khong tim thay" << endl;
+
+	DeleteGpaEqual5(bst);
+
+	PrintGpaDescending(bst.root);
+
+	cout << "Chieu cao cua cay: " << Height(bst.root) << endl;
+
+	cout << "Bac cua node root: " << Degree(bst.root) << endl;
+
 	return 0;
 }
 
@@ -181,4 +204,24 @@ int Degree(Node* p)
 		return 2;
 	else
 		return 1;
+}
+void InputNode(Node*& p)
+{
+	cin >> p->maSinhVien;
+	cin.ignore();
+	getline(cin, p->hoTen);
+	cin >> p->diemTrungBinh;
+	p->left = p->right = nullptr;
+}
+void Input(BST& bst)
+{
+	int x;
+	do {
+		cin >> x;
+		if (x == -1)
+			return;
+		Node* p = new Node;
+		InputNode(p);
+		Insert(bst, p);
+	} while (x != -1);
 }
