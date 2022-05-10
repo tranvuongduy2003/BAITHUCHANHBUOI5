@@ -25,8 +25,12 @@ void PrintRNL(Node*);
 void PrintRLN(Node*);
 Node* SearchNode(Node*, int);
 bool IsPrimeNumber(int);
-void DeletePrimeNode(Tree&, int);
+int Height(Node*);
+Node* InPre(Node*);
+Node* DeletePrimeNode(Tree&, int);
+Node* Delete(Tree&, Node*, int);
 int CountNode(Node*);
+void DrawTree(Tree& t);
 
 
 int main()
@@ -180,9 +184,66 @@ bool IsPrimeNumber(int x)
 	}
 	return x >= 2;
 }
-void DeletePrimeNode(Tree& t, int x)
+int Height(Node* p)
 {
-	
+	int x, y;
+	if (p == nullptr) return 0;
+	x = Height(p->left);
+	y = Height(p->right);
+	return x > y ? x + 1 : y + 1;
+}
+Node* InPre(Node* p)
+{
+	while (p && p->right != nullptr)
+		p = p->right;
+	return p;
+}
+Node* InSucc(Node* p)
+{
+	while (p && p->left != nullptr)
+		p = p->left;
+	return p;
+}
+Node* DeletePrimeNode(Tree& t, int x)
+{
+	Node* p = nullptr;
+	if (IsPrimeNumber(x))
+		p = Delete(t, t.root, x);
+	return p;
+}
+Node* Delete(Tree& t, Node* p, int x)
+{
+	Node* q = nullptr;
+	if (p == nullptr)
+		return nullptr;
+	if (p->left == nullptr && p->right == nullptr)
+	{
+		if (p == t.root)
+			t.root = nullptr;
+		delete p;
+		return nullptr;
+	}
+
+	if (x < p->key)
+		p->left = Delete(t, p->left, x);
+	else if (x > p->key)
+		p->right = Delete(t, p->right, x);
+	else
+	{
+		if (Height(p->left) > Height(p->right))
+		{
+			q = InPre(p->left);
+			p->key = q->key;
+			p->left = Delete(t, p->left, q->key);
+		}
+		else
+		{
+			q = InSucc(p->right);
+			p->key = q->key;
+			p->right = Delete(t, p->right, q->key);
+		}
+	}
+	return p;
 }
 int CountNode(Node* p)
 {
